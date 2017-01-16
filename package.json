@@ -1,0 +1,18 @@
+{
+  "name": "build-electron-app",
+  "version": "0.0.0",
+  "description": "Build an Electron app. Simple, no config.",
+  "main": "build.js",
+  "scripts": {
+    "test": "standard && echo '\\033[32m✓\\033[39m standard \\033[31m♥\\033[39m you'"
+  },
+  "bin": "build.js",
+  "author": "Jed Fox",
+  "license": "ISC",
+  "dependencies": {
+    "electron-packager": "^8.5.0"
+  },
+  "devDependencies": {
+    "standard": "^8.6.0"
+  }
+}
