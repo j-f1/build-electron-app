@@ -26,6 +26,7 @@ function copy (src, dst) {
  * ./build.js --plat # no prompt, default
  * ./build.js --arch # no prompt, default
  * ./build.js <options?> --install # Install to /Applications
+ * ./build.js <options?> --icon icon # Add an icon. Adds a .png, .ico, or.icns extension depending on the platform
  * ./build.js --all # All!
  */
 
@@ -64,11 +65,15 @@ let fail = err => {
 prompt('--plat', 'Platform (linux/win32/darwin/all)', process.platform).then(platform => {
   prompt('--arch', 'Architecture (ia32/x64/all)', process.arch).then(arch => {
     const pkg = require(path.join(process.cwd(), 'package.json'))
+    let icon = 'img/icon'
+    if (process.argv.indexOf('--icon') !== -1) {
+      icon = process.argv[process.argv.indexOf('--icon') + 1]
+    }
     packager({
       arch,
       dir: process.cwd(),
       platform,
-      // icon: 'icon.icns || icon.ico',
+      icon,
       ignore: [
         /.*\.blend\d+/
       ],
