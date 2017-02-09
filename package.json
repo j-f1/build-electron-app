@@ -6,7 +6,9 @@
   "scripts": {
     "test": "standard && echo '\\033[32m✓\\033[39m standard \\033[31m♥\\033[39m you'"
   },
-  "bin": "build.js",
+  "bin": {
+    "build-electron-app": "build.js"
+  },
   "author": "Jed Fox",
   "license": "ISC",
   "dependencies": {
@@ -14,5 +16,13 @@
   },
   "devDependencies": {
     "standard": "^8.6.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/j-f1/build-electron-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/j-f1/build-electron-app/issues"
+  },
+  "homepage": "https://github.com/j-f1/build-electron-app#readme"
 }
