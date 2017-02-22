@@ -3,6 +3,7 @@
 var packager = require('electron-packager')
 var fs = require('fs')
 var path = require('path')
+var zip = require('zip-dir')
 
 // Promisified, based on http://stackoverflow.com/a/14387791/5244995
 
@@ -62,6 +63,9 @@ let fail = err => {
   console.error('ERR!', err)
 }
 
+if (process.argv.indexOf('--compress') > -1 && !fs.existsSync('dist')) {
+  fs.mkdirSync('dist')
+}
 prompt('--plat', 'Platform (linux/win32/darwin/all)', process.platform).then(platform => {
   prompt('--arch', 'Architecture (ia32/x64/all)', process.arch).then(arch => {
     const pkg = require(path.join(process.cwd(), 'package.json'))
@@ -87,11 +91,24 @@ prompt('--plat', 'Platform (linux/win32/darwin/all)', process.platform).then(pla
         console.error('ERR!', err)
       } else {
         paths.forEach(file => {
-          var fileName = path.relative(path.join(__dirname, 'build'), file)
-          console.log('executable:', fileName)
+          var destination = path.relative(path.join(process.cwd()), file)
+          console.log('executable:', destination)
+          if (process.argv.indexOf('--compress') > -1) {
+            console.log('zipping to', path.relative(path.join(process.cwd()), path.join(process.cwd(), 'dist', file.replace('build/', '') + '.zip')))
+            zip(destination, {
+              saveTo: path.join(process.cwd(), 'dist', file.replace('build/', '') + '.zip')
+            }, err => {
+              if (err) {
+                console.log('Failed to create zip:')
+                console.error(err)
+              } else {
+                console.log('zipped executable to', path.relative(path.join(process.cwd()), path.join(process.cwd(), 'dist', file.replace('build/', '') + '.zip')))
+              }
+            })
+          }
           if (process.argv.indexOf('--install') !== -1) {
-            copy(file, path.join('/Applications', fileName)).then(() => {
-              console.log(file, 'copied to', path.join('/Applications', fileName))
+            copy(file, path.join('/Applications', destination)).then(() => {
+              console.log(file, 'copied to', path.join('/Applications', destination))
             }, err => {
               console.log('ERR!', err)
             })
