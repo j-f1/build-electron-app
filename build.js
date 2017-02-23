@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-var packager = require('electron-packager')
-var fs = require('fs')
-var path = require('path')
-var zip = require('zip-dir')
+const packager = require('electron-packager')
+const fs = require('fs')
+const path = require('path')
+const zip = require('zip-dir')
 
 // Promisified, based on http://stackoverflow.com/a/14387791/5244995
 
@@ -91,7 +91,7 @@ prompt('--plat', 'Platform (linux/win32/darwin/all)', process.platform).then(pla
         console.error('ERR!', err)
       } else {
         paths.forEach(file => {
-          var destination = path.relative(path.join(process.cwd()), file)
+          const destination = path.relative(path.join(process.cwd()), file)
           console.log('executable:', destination)
           if (process.argv.indexOf('--compress') > -1) {
             console.log('zipping to', path.relative(path.join(process.cwd()), path.join(process.cwd(), 'dist', file.replace('build/', '') + '.zip')))
