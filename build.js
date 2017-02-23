@@ -89,14 +89,14 @@ prompt('--plat', 'Platform (linux/win32/darwin/all)', process.platform).then(pla
       'app-version': pkg.version
     }, (err, paths) => {
       if (err) {
-        console.error(chalk.white.bgRed('ERR!'), err)
+        console.error(chalk.white.bgRed('ERR'), err)
       } else {
         paths.forEach(file => {
           const destination = path.relative(path.join(process.cwd()), file)
           const relPath = chalk.bold(path.relative(path.join(process.cwd()), path.join(process.cwd(), 'dist', file.replace('build/', '') + '.zip')))
-          console.log('executable:', destination)
+          console.log(chalk.green('\u{2713}') + ' executable:', chalk.green(destination))
           if (process.argv.indexOf('--compress') > -1) {
-            console.log('zipping to', relPath)
+            console.log('zipping to', relPath + '...')
             zip(destination, {
               saveTo: path.join(process.cwd(), 'dist', file.replace('build/', '') + '.zip')
             }, err => {
@@ -104,7 +104,7 @@ prompt('--plat', 'Platform (linux/win32/darwin/all)', process.platform).then(pla
                 console.log(chalk.bold.white.bgRed('Failed to create zip:'))
                 console.error(err)
               } else {
-                console.log(chalk.green('\u{2713}') + ' zipped executable to', relPath)
+                console.log(chalk.green('\u{2713}') + ' zipped executable to', chalk.green(relPath))
               }
             })
           }
