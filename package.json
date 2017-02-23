@@ -12,6 +12,7 @@
   "author": "Jed Fox",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^1.1.3",
     "electron-packager": "^8.5.0",
     "zip-dir": "^1.0.2"
   },

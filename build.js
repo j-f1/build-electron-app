@@ -4,6 +4,7 @@ const packager = require('electron-packager')
 const fs = require('fs')
 const path = require('path')
 const zip = require('zip-dir')
+const chalk = require('chalk')
 
 // Promisified, based on http://stackoverflow.com/a/14387791/5244995
 
@@ -49,7 +50,7 @@ function prompt (arg, promptStr, defaultValue) {
   }
 
   return new Promise((resolve, reject) => {
-    process.stdout.write(`${promptStr}: [${defaultValue}] `)
+    process.stdout.write(`${chalk.bold(promptStr)}: [${chalk.gray.underline(defaultValue)}] `)
     process.stdin.resume()
     process.stdin.setEncoding('utf8')
     process.stdin.once('data', val => {
@@ -88,21 +89,22 @@ prompt('--plat', 'Platform (linux/win32/darwin/all)', process.platform).then(pla
       'app-version': pkg.version
     }, (err, paths) => {
       if (err) {
-        console.error('ERR!', err)
+        console.error(chalk.white.bgRed('ERR!'), err)
       } else {
         paths.forEach(file => {
           const destination = path.relative(path.join(process.cwd()), file)
+          const relPath = chalk.bold(path.relative(path.join(process.cwd()), path.join(process.cwd(), 'dist', file.replace('build/', '') + '.zip')))
           console.log('executable:', destination)
           if (process.argv.indexOf('--compress') > -1) {
-            console.log('zipping to', path.relative(path.join(process.cwd()), path.join(process.cwd(), 'dist', file.replace('build/', '') + '.zip')))
+            console.log('zipping to', relPath)
             zip(destination, {
               saveTo: path.join(process.cwd(), 'dist', file.replace('build/', '') + '.zip')
             }, err => {
               if (err) {
-                console.log('Failed to create zip:')
+                console.log(chalk.bold.white.bgRed('Failed to create zip:'))
                 console.error(err)
               } else {
-                console.log('zipped executable to', path.relative(path.join(process.cwd()), path.join(process.cwd(), 'dist', file.replace('build/', '') + '.zip')))
+                console.log(chalk.green('\u{2713}') + ' zipped executable to', relPath)
               }
             })
           }
