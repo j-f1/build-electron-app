@@ -70,7 +70,7 @@ if (process.argv.indexOf('--compress') > -1 && !fs.existsSync('dist')) {
 prompt('--plat', 'Platform (linux/win32/darwin/all)', process.platform).then(platform => {
   prompt('--arch', 'Architecture (ia32/x64/all)', process.arch).then(arch => {
     const pkg = require(path.join(process.cwd(), 'package.json'))
-    let icon = 'img/icon'
+    let icon = path.join('img', 'icon')
     if (process.argv.indexOf('--icon') !== -1) {
       icon = process.argv[process.argv.indexOf('--icon') + 1]
     }
@@ -85,7 +85,7 @@ prompt('--plat', 'Platform (linux/win32/darwin/all)', process.platform).then(pla
       name: pkg.productName,
       overwrite: true,
       prune: true,
-      out: 'build/',
+      out: 'build' + path.sep,
       'app-version': pkg.version
     }, (err, paths) => {
       if (err) {
@@ -93,12 +93,12 @@ prompt('--plat', 'Platform (linux/win32/darwin/all)', process.platform).then(pla
       } else {
         paths.forEach(file => {
           const destination = path.relative(path.join(process.cwd()), file)
-          const relPath = chalk.bold(path.relative(path.join(process.cwd()), path.join(process.cwd(), 'dist', file.replace('build/', '') + '.zip')))
+          const relPath = chalk.bold(path.relative(path.join(process.cwd()), path.join(process.cwd(), 'dist', file.replace(/build(\/|\\)/, '') + '.zip')))
           console.log(chalk.green('\u{2713}') + ' executable:', chalk.green(destination))
           if (process.argv.indexOf('--compress') > -1) {
             console.log('zipping to', relPath + '...')
             zip(destination, {
-              saveTo: path.join(process.cwd(), 'dist', file.replace('build/', '') + '.zip')
+              saveTo: path.join(process.cwd(), 'dist', file.replace(/build(\/|\\)/, '') + '.zip')
             }, err => {
               if (err) {
                 console.log(chalk.bold.white.bgRed('Failed to create zip:'))
