@@ -1,5 +1,7 @@
 # build-electron-app
 
+[![bitHound Overall Score](https://www.bithound.io/github/j-f1/build-electron-app/badges/score.svg)](https://www.bithound.io/github/j-f1/build-electron-app)
+
 Build your Electron app with a nice CLI interface
 
 ## Install
