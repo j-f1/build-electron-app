@@ -4,7 +4,7 @@
   "description": "Build an Electron app. Simple, no config.",
   "main": "build.js",
   "scripts": {
-    "test": "standard && echo '\\033[32m✓\\033[39m standard \\033[31m♥\\033[39m you'"
+    "test": "standard && echo '\\033[32m✓\\033[39m standard \\033[31m♥\\033[39m you' && bithound check git@github.com:j-f1/build-electron-app.git"
   },
   "bin": {
     "build-electron-app": "build.js"
@@ -17,6 +17,7 @@
     "zip-dir": "^1.0.2"
   },
   "devDependencies": {
+    "bithound": "^1.7.0",
     "standard": "^9.0.1"
   },
   "repository": {
